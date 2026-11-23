@@ -5,41 +5,41 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Prime Numbers Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* VOICE: warm, playful, clear; a lab for a child and a parent at a kitchen table
    IDEA: a school maths workbook with counters, a hundred square and dominoes
    PICTURE: the live hundred square sieve, large, at the top
-   COLOUR and TYPE: white paper, crayon red, blue and sunflower yellow; Fredoka titles, Nunito text
+   COLOUR and TYPE: ESL house style, navy banner with gilt lettering on warm stone grey, violet and crimson accents; Newsreader titles, Archivo text
    LAYOUT: one column of activity cards, each a page of the workbook */
-:root{color-scheme:light dark;--bg:light-dark(#ffffff,#141821);--paper:light-dark(#f4f7ff,#1d2330);--ink:light-dark(#1b1f2a,#eef1f8);--soft:light-dark(#5a6275,#a9b1c4);--red:#e5383b;--blue:#2f6fde;--sun:#ffc533;--line:light-dark(#d9e0ef,#2e3647)}
+:root{color-scheme:light dark;--bg:light-dark(#e9e7e1,#15151b);--paper:light-dark(#f6f5f1,#1f1f28);--ink:light-dark(#1c1b20,#efede6);--soft:light-dark(#5d5a63,#aeaab5);--red:#b3245a;--blue:light-dark(#4b3596,#a993f0);--sun:#d6a93a;--navy:#14203f;--line:light-dark(#d6d2c8,#34343f)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
-h1,h2{font-family:Fredoka,system-ui,sans-serif;line-height:1.05;text-wrap:balance;margin:0 0 10px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2{font-family:Newsreader,Georgia,serif;line-height:1.05;text-wrap:balance;margin:0 0 10px}
 h1{font-size:clamp(34px,6vw,52px)}h2{font-size:clamp(24px,3.4vw,32px)}
 p{max-width:64ch;margin:0 0 12px}
 .band{padding:clamp(24px,4vw,56px) max(5vw,16px);max-width:1240px;margin:0 auto}
-.top{background:var(--blue);color:#fff;max-width:none}
+.top{background:var(--navy);color:#fff;max-width:none;border-bottom:6px solid var(--sun)}.top h1{color:var(--sun)}.kick{font:600 15px Archivo,sans-serif;color:var(--sun);margin-bottom:8px}.kick a{color:var(--sun)}
 .top .in{max-width:1240px;margin:0 auto;display:grid;gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center}
-.top p{color:#eaf0ff}
+.top p{color:#e8e4d8}
 @media(max-width:800px){.top .in{grid-template-columns:minmax(0,1fr)}}
 .grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;background:#fff;padding:10px;border-radius:16px;box-shadow:0 10px 0 rgba(0,0,0,.18)}
-.cell{aspect-ratio:1;border:0;border-radius:8px;font:700 clamp(12px,2.2vw,18px) Fredoka,sans-serif;background:#eef3ff;color:#1b1f2a;cursor:pointer;transition:background .25s,transform .25s}
+.cell{aspect-ratio:1;border:0;border-radius:8px;font:700 clamp(12px,2.2vw,18px) Archivo,sans-serif;background:#eef3ff;color:#1b1f2a;cursor:pointer;transition:background .25s,transform .25s}
 .cell.out{background:#f1f1f1;color:#b9b9b9;text-decoration:line-through}
 .cell.prime{background:var(--sun)}
 .cell:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
 .row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
-button.b{min-height:44px;padding:0 18px;border-radius:22px;border:0;font:600 16px Fredoka,sans-serif;background:var(--sun);color:#1b1f2a;cursor:pointer}
+button.b{min-height:44px;padding:0 18px;border-radius:22px;border:0;font:600 16px Archivo,sans-serif;background:var(--sun);color:#1b1f2a;cursor:pointer}
 button.b.alt{background:#fff;color:var(--blue)}
 .card{background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
-.card .tag{font:600 15px Fredoka,sans-serif;color:var(--red);margin-bottom:4px}
-input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.card .tag{font:600 15px Archivo,sans-serif;color:var(--red);margin-bottom:4px}
+input[type=number]{font:600 18px Archivo,sans-serif;width:110px;min-height:44px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
 .dots{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px}
 .rect{display:grid;gap:5px;padding:10px;border-radius:12px;background:var(--bg);border:2px dashed var(--line)}
 .rect i{width:14px;height:14px;border-radius:50%;background:var(--red);display:block}
-.rect small{grid-column:1/-1;font:600 14px Fredoka,sans-serif;color:var(--soft)}
-.say{font:600 19px Fredoka,sans-serif;color:var(--blue);min-height:28px}
+.rect small{grid-column:1/-1;font:600 14px Archivo,sans-serif;color:var(--soft)}
+.say{font:600 19px Archivo,sans-serif;color:var(--blue);min-height:28px}
 .bars{display:grid;gap:8px;margin-top:8px}
 .bar{display:grid;grid-template-columns:6.5em minmax(0,1fr) 2em;gap:10px;align-items:center;font-size:15px}
 .bar span.f{height:22px;border-radius:11px;background:var(--blue);display:block}
@@ -53,19 +53,20 @@ input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;
 .top .learn{background:#fff6d6;color:#1b1f2a!important}
 .story{border-color:var(--sun);border-width:3px}.story p{font-size:18px}
 .six{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:420px;margin:12px 0}
-.six span{aspect-ratio:1.6;display:grid;place-items:center;border-radius:8px;background:light-dark(#fff,#141821);border:2px solid var(--line);font:700 16px Fredoka,sans-serif;transition:background .25s}
+.six span{aspect-ratio:1.6;display:grid;place-items:center;border-radius:8px;background:light-dark(#fff,#141821);border:2px solid var(--line);font:700 16px Archivo,sans-serif;transition:background .25s}
 .six span.p{background:var(--sun);color:#1b1f2a;border-color:var(--sun)}
 .six span.col{box-shadow:inset 0 0 0 3px var(--blue)}
 #curve button.b[aria-pressed=false]{background:#fff;color:var(--blue)}
-.tbl{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:16px}.tbl th,.tbl td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}.tbl th{font:600 15px Fredoka,sans-serif;color:var(--blue)}
+.tbl{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:16px}.tbl th,.tbl td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}.tbl th{font:600 15px Archivo,sans-serif;color:var(--blue)}
 @media(max-width:640px){.tbl{font-size:14px}.tbl th,.tbl td{padding:6px}}
-nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Fredoka,sans-serif}
+nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Archivo,sans-serif}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <header class="band top"><div class="in">
  <div>
+  <div class="kick">Epistemic Systems Lab &middot; for the <a href="https://github.com/Integral-School">Integral School</a></div>
   <h1>Prime Numbers Lab</h1>
   <p>Hands-on games for the maths behind the Riemann Hypothesis story. Made for a child of about six and a grown-up, side by side.</p>
   <p><b>What is a prime number?</b> A prime is a whole number bigger than 1 that only 1 and itself divide exactly, such as 2, 3, 5, 7 and 11. Every other whole number can be made by multiplying primes together, so the primes are the building blocks of all numbers.</p>
@@ -143,7 +144,7 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <div class="tag">Activity 4</div>
  <h2>Count against the curve</h2>
  <p><b>Goal:</b> see the big pattern, and the wobbles around it.</p>
- <p>The blue staircase steps up by one each time a prime appears. The red dashed line is Gauss's smooth guess for where the count should be. Pick how far to count.</p>
+ <p>The violet staircase steps up by one each time a prime appears. The crimson dashed line is Gauss's smooth guess for where the count should be. Pick how far to count.</p>
  <div class="row"><button class="b" data-max="100">Up to 100</button><button class="b" data-max="1000">Up to 1,000</button><button class="b" data-max="10000">Up to 10,000</button></div>
  <div class="fig" id="curveFig"><svg id="curveSvg" role="img" aria-label="Real count of primes as a staircase next to Gauss's smooth estimate"></svg></div>
  <p class="say" id="curveSay"></p>
@@ -224,7 +225,8 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <p>The proof does not find the hidden machine. Alpöge's argument uses tools from pure mathematics with no physics machine inside it, so the link between primes and chaos is still a puzzle waiting for an explanation.</p>
  <p>The primes still teach a lesson. They look random from the outside, yet every single one is fixed by a rule, so what looked like chaos was an intricate order we had not yet learned to see.</p>
 </section>
-<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim. History sources: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Prime_numbers/">MacTutor, University of St Andrews, "Prime numbers"</a>; <a href="https://arxiv.org/abs/1810.05244">Moree, Petrykiewicz and Sedunova, "A computational history of prime numbers and Riemann zeros"</a>; <a href="https://jontalle.web.engr.illinois.edu/uploads/298.15/GoldsteinHistPrimeNumThm.73.pdf">Goldstein, "A history of the prime number theorem"</a>; <a href="https://t5k.org/howmany.html">The Prime Pages, "How many primes are there?"</a>; <a href="https://arxiv.org/abs/0803.0420">reference list in arXiv:0803.0420</a> for the 1798, 1863 and 1896 publications; <a href="https://pub.math.leidenuniv.nl/~evertsejh/ant16-1.pdf">Leiden University lecture notes</a> for Riemann's 1859 paper. On the 2026 claim: <a href="https://alpo.ge/remark.pdf">Alpöge's announcement note</a>; <a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean and Mathlib communities' joint statement</a>; <a href="https://math.mit.edu/~drew/grh/">Sutherland's verification report</a>; <a href="https://www.anthropic.com/research/riemann-zeta">Anthropic's research post on the zeta zeros</a>.</p>
+<p class="note">A learning page from the Epistemic Systems Lab, made for the <a href="https://github.com/Integral-School">Integral School</a>. History sources: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Prime_numbers/">MacTutor, University of St Andrews, "Prime numbers"</a>; <a href="https://arxiv.org/abs/1810.05244">Moree, Petrykiewicz and Sedunova, "A computational history of prime numbers and Riemann zeros"</a>; <a href="https://jontalle.web.engr.illinois.edu/uploads/298.15/GoldsteinHistPrimeNumThm.73.pdf">Goldstein, "A history of the prime number theorem"</a>; <a href="https://t5k.org/howmany.html">The Prime Pages, "How many primes are there?"</a>; <a href="https://arxiv.org/abs/0803.0420">reference list in arXiv:0803.0420</a> for the 1798, 1863 and 1896 publications; <a href="https://pub.math.leidenuniv.nl/~evertsejh/ant16-1.pdf">Leiden University lecture notes</a> for Riemann's 1859 paper. On the 2026 claim: <a href="https://alpo.ge/remark.pdf">Alpöge's announcement note</a>; <a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean and Mathlib communities' joint statement</a>; <a href="https://math.mit.edu/~drew/grh/">Sutherland's verification report</a>; <a href="https://www.anthropic.com/research/riemann-zeta">Anthropic's research post on the zeta zeros</a>.</p>
+<p class="note">&copy; Copyright 2026 Epistemic Systems Lab</p>
 </main>
 
 <script>
@@ -268,7 +270,7 @@ const drawLine=()=>{const W=ls.clientWidth,H=ls.clientHeight,x0=Math.min(120,W*.
  for(let k=0;k<=120;k++){const t=k/120,y=mid+amp*Math.sin(t*14)*Math.cos(t*5)*(off?1+t:1);d+=(k?'L':'M')+(gx+t*gw).toFixed(1)+' '+y.toFixed(1)}
  s+=`<line x1="${gx}" y1="${mid}" x2="${gx+gw}" y2="${mid}" stroke="var(--soft)" stroke-dasharray="6 6"/>`;
  s+=`<path d="${d}" fill="none" stroke="var(--red)" stroke-width="3"/>`;
- if(W>420)s+=`<text x="${gx}" y="18" fill="var(--soft)" font-size="14" font-family="Nunito">Prime count minus the smooth guess</text>`;
+ if(W>420)s+=`<text x="${gx}" y="18" fill="var(--soft)" font-size="14" font-family="Archivo">Prime count minus the smooth guess</text>`;
  ls.innerHTML=s};
 const ro1=new ResizeObserver(drawLine);ro1.observe(ls);
 $('push').onclick=()=>{off=true;drawLine()};$('back').onclick=()=>{off=false;drawLine()};
@@ -276,10 +278,12 @@ $('push').onclick=()=>{off=true;drawLine()};$('back').onclick=()=>{off=false;dra
 /* dominoes */
 const N=12;let missing=-1;const dom=$('dom');
 const build=()=>{dom.innerHTML=Array.from({length:N},(_,i)=>`<i style="visibility:${i===missing?'hidden':'visible'}"></i>`).join('');$('domSay').textContent=''};
-$('tip').onclick=()=>{const ds=[...dom.children];let stop=missing>=0?missing:N;
- ds.forEach((d,i)=>{if(i<stop)setTimeout(()=>d.classList.add('down'),i*160)});
- setTimeout(()=>{$('domSay').textContent=missing>=0?'A domino is missing, so the rest stay standing. The proof has a gap.':'Every domino fell. The proof is complete.'},stop*160+200)};
-$('gap').onclick=()=>{missing=5;build()};$('stand').onclick=()=>{missing=-1;build()};build();
+let timers=[];
+$('tip').onclick=()=>{timers.forEach(clearTimeout);timers=[];build();const ds=[...dom.children];const stop=missing>=0?missing:N;
+ ds.forEach((d,i)=>{if(i<stop)timers.push(setTimeout(()=>d.classList.add('down'),120+i*160))});
+ timers.push(setTimeout(()=>{$('domSay').textContent=missing>=0?`Domino number ${missing+1} is missing, so the chain stops after ${missing} and the rest stay standing. The proof has a gap.`:'Every domino fell. The proof is complete.'},120+stop*160+200))};
+$('gap').onclick=()=>{timers.forEach(clearTimeout);let m;do{m=1+Math.floor(Math.random()*(N-2))}while(m===missing);missing=m;build();$('domSay').textContent='One domino has gone. Push the first one and see what happens.'};
+$('stand').onclick=()=>{timers.forEach(clearTimeout);missing=-1;build()};build();
 
 /* chaos */
 const cs=$('chaosSvg');let shown=0,tick=null;
