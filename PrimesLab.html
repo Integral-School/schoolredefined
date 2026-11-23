@@ -49,6 +49,9 @@ input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;
 .dom i{flex:none;width:22px;height:84px;border-radius:5px;background:var(--ink);transform-origin:bottom right;transition:transform .25s}
 .dom i.down{transform:rotate(62deg)}
 .note{font-size:14px;color:var(--soft)}
+.learn{background:light-dark(#fff6d6,#2a2618);border-left:6px solid var(--sun);border-radius:10px;padding:10px 14px;font-weight:700;color:var(--ink)!important;max-width:64ch}
+.top .learn{background:#fff6d6;color:#1b1f2a!important}
+.story{border-color:var(--sun);border-width:3px}.story p{font-size:18px}
 nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Fredoka,sans-serif}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -58,7 +61,9 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <div>
   <h1>Prime Numbers Lab</h1>
   <p>Hands-on games for the maths behind the Riemann Hypothesis story. Made for a child of about six and a grown-up, side by side.</p>
-  <p>Start here with the prime hunt. Press 2, then 3, then 5, then 7. Each press crosses out the numbers you land on counting in that step. The yellow numbers left standing are the primes.</p>
+  <p><b>What is a prime number?</b> A prime is a whole number bigger than 1 that only 1 and itself divide exactly, such as 2, 3, 5, 7 and 11. Every other whole number can be made by multiplying primes together, so the primes are the building blocks of all numbers.</p>
+  <p><b>The prime hunt.</b> Press 2, then 3, then 5, then 7. Each press crosses out every number you reach counting in jumps of that size, because those numbers can be split into equal groups and so are not prime. The yellow numbers left standing are the primes up to 100.</p>
+  <p class="learn">Goal: by crossing out everything that can be built by multiplying, you find the numbers that cannot be built from smaller ones. This method is more than two thousand years old.</p>
   <div class="row"><button class="b" id="auto">Do it for me</button><button class="b alt" id="reset">Start again</button></div>
   <p class="say" id="sieveSay" style="color:#fff"></p>
  </div>
@@ -66,52 +71,87 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
 </div></header>
 
 <main class="band">
-<nav class="scroll" aria-label="Activities"><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a></nav>
+<nav class="scroll" aria-label="Activities"><a href="#story">Story so far</a><a href="#background">A little history</a><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a><a href="#means">What it means for chaos</a></nav>
 
-<section class="card" id="rows" style="margin-top:18px">
+<section class="card story" id="story" style="margin-top:18px">
+ <div class="tag">Start here</div>
+ <h2>Story so far</h2>
+ <p>Prime numbers are the numbers you can only lay out in one long line, like 2, 3, 5, 7 and 11. They seem to pop up at random, and for a very long time nobody could explain the pattern behind them.</p>
+ <p>More than 150 years ago a mathematician called Bernhard Riemann made a famous guess. He found a machine of numbers whose secret helpers push the prime count up or down, and he guessed that every helper stands on one straight line. If he is right, the primes never stray far from a smooth path. People call this guess the Riemann Hypothesis, and nobody managed to prove it.</p>
+ <p>This November a mathematician called Levent Alpöge said he had found a proof, working with an AI helper called Claude. The proof is so long that no person can read all of it, so he gave it to Lean, a computer teacher that checks every step. Lean found no missing dominoes. Mathematicians around the world now want to understand the proof in words people can follow, and that work has only just begun.</p>
+ <p>The games below let you try each idea yourself, one step at a time.</p>
+</section>
+
+<section class="card story" id="background">
+ <div class="tag">A little history</div>
+ <h2>People have studied primes for thousands of years</h2>
+ <p>Around 300 BC the Greek mathematician Euclid proved that the primes never run out: however far you count, there is always another one. He also showed that every whole number is made from primes in only one way, like a recipe with just one list of ingredients.</p>
+ <p>About a hundred years later, Eratosthenes, a Greek scholar living in Alexandria in Egypt, invented the crossing-out method you use in the hundred square. It is still called the Sieve of Eratosthenes.</p>
+ <p>Much later, mathematicians such as Carl Friedrich Gauss made long tables of primes and noticed a pattern: primes get rarer at a steady, predictable rate. Gauss guessed a formula for how many primes there are below any number. Riemann then found a new way to study that question, and his ideas helped two mathematicians, Hadamard and de la Vallée Poussin, prove the formula at the end of the 1800s.</p>
+ <p>One question was left over. The formula gives the average, but how far can the real count of primes stray from it? Riemann's famous guess is about exactly that question, and the games below build up to it.</p>
+</section>
+<section class="card" id="rows">
  <div class="tag">Activity 1</div>
  <h2>Rows of buttons</h2>
+ <p><b>Goal:</b> see with your own eyes what makes a number prime.</p>
  <p>Pick a number of buttons. The lab tries every way to lay them out in equal rows. A prime number only makes one long line.</p>
  <div class="row"><label for="n" style="align-self:center">How many buttons?</label><input type="number" id="n" min="2" max="36" value="12"><button class="b" id="go">Lay them out</button></div>
  <p class="say" id="rowSay"></p>
  <div class="dots" id="dots"></div>
+ <p class="learn">What you just learned: a prime is a number of buttons that cannot be shared out into equal rows. Twelve can make rows of 2, 3, 4 or 6, but seven only ever makes one long line.</p>
 </section>
 
 <section class="card" id="gaps">
  <div class="tag">Activity 2</div>
  <h2>Gaps and counting</h2>
+ <p><b>Goal:</b> find out how the primes behave as the numbers get bigger.</p>
  <p>The primes jump about, so they look random. A fixed rule decides every one. They also get rarer as the numbers grow. Here is how many primes live in each group of ten up to 100.</p>
  <div class="bars" id="bars"></div>
  <p class="say" id="gapSay"></p>
+ <p class="learn">What you just learned: primes get rarer as numbers grow, and the gaps between them jump about, so they look random. A fixed rule still decides every one. The big question for mathematicians is how far the real number of primes can stray from a smooth average.</p>
 </section>
 
 <section class="card" id="line">
  <div class="tag">Activity 3</div>
  <h2>Riemann's line</h2>
+ <p><b>Goal:</b> get a feel for what Riemann guessed, using a picture.</p>
  <p>Riemann's machine has secret helper numbers. Each helper nudges the prime count up or down. He guessed they all stand on one straight line. Press the button to push one helper off the line and watch the count wobble more.</p>
  <div class="row"><button class="b" id="push">Push a helper off</button><button class="b alt" id="back">Put it back</button></div>
  <div class="fig" id="lineFig"><svg id="lineSvg" role="img" aria-label="Helpers on a line and a wobbling count"></svg></div>
  <p class="note">A picture to explain the idea, not real measurements.</p>
+ <p class="learn">What you just learned: Riemann's guess is about keeping the primes tidy. If all his helpers stand on the line, the prime count never strays far from the smooth average; one helper off the line would let it swing much further.</p>
 </section>
 
 <section class="card" id="proof">
  <div class="tag">Activity 4</div>
  <h2>Dominoes</h2>
+ <p><b>Goal:</b> understand what a proof is, and what the computer checked.</p>
  <p>A proof works like a row of dominoes. Each step knocks over the next, so if the first falls, they all fall. A computer teacher called Lean checks that no domino is missing.</p>
  <div class="row"><button class="b" id="tip">Push the first one</button><button class="b alt" id="gap">Take one away</button><button class="b alt" id="stand">Stand them up</button></div>
  <div class="dom" id="dom"></div>
  <p class="say" id="domSay"></p>
+ <p class="learn">What you just learned: a proof is a chain of steps in which each step makes the next one certain, and one missing step breaks the whole chain. Lean checks that no step is missing. Mathematicians still want to read the proof, to understand why the chain was built that way.</p>
 </section>
 
 <section class="card" id="chaos">
  <div class="tag">Activity 5</div>
  <h2>Chaos</h2>
+ <p><b>Goal:</b> see what scientists mean by chaos before reading what the proof means for it.</p>
  <p>Two marbles start almost in the same spot, only a hair apart. In a chaotic machine their paths soon look nothing alike. Scientists noticed that Riemann's helpers keep their distance the way energy levels do in chaotic systems.</p>
  <div class="row"><button class="b" id="roll">Roll the marbles</button></div>
  <div class="fig" id="chaosFig"><svg id="chaosSvg" role="img" aria-label="Two paths that start close and spread apart"></svg></div>
  <p class="note">The paths come from a simple chaotic rule, drawn as an illustration.</p>
+ <p class="learn">What you just learned: in a chaotic system a tiny difference at the start grows into a huge difference later. The next box explains why chaos comes up in the story of the primes.</p>
 </section>
-<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim.</p>
+<section class="card story" id="means">
+ <div class="tag">Big question</div>
+ <h2>What it means for chaos</h2>
+ <p>Scientists who study chaos noticed something strange about Riemann's helpers. The helpers keep their distance from each other in the same pattern as the energy levels of tiny particles bouncing around inside chaotic machines. Some physicists began to wonder whether a hidden chaotic machine makes the primes, with each prime acting like a path the machine keeps repeating.</p>
+ <p>Much of that work started with an "if". It said: if Riemann's guess is true, then this follows. A proof that holds up turns those "if" results into things we know for sure.</p>
+ <p>The proof does not find the hidden machine. Alpöge's argument uses tools from pure mathematics with no physics machine inside it, so the link between primes and chaos is still a puzzle waiting for an explanation.</p>
+ <p>The primes still teach a lesson. They look random from the outside, yet every single one is fixed by a rule, so what looked like chaos was an intricate order we had not yet learned to see.</p>
+</section>
+<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim. History sources: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Prime_numbers/">MacTutor, University of St Andrews, "Prime numbers"</a>; <a href="https://arxiv.org/abs/1810.05244">Moree, Petrykiewicz and Sedunova, "A computational history of prime numbers and Riemann zeros"</a>.</p>
 </main>
 
 <script>
