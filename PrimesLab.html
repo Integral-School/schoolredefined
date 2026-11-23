@@ -52,6 +52,11 @@ input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;
 .learn{background:light-dark(#fff6d6,#2a2618);border-left:6px solid var(--sun);border-radius:10px;padding:10px 14px;font-weight:700;color:var(--ink)!important;max-width:64ch}
 .top .learn{background:#fff6d6;color:#1b1f2a!important}
 .story{border-color:var(--sun);border-width:3px}.story p{font-size:18px}
+.six{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:420px;margin:12px 0}
+.six span{aspect-ratio:1.6;display:grid;place-items:center;border-radius:8px;background:light-dark(#fff,#141821);border:2px solid var(--line);font:700 16px Fredoka,sans-serif;transition:background .25s}
+.six span.p{background:var(--sun);color:#1b1f2a;border-color:var(--sun)}
+.six span.col{box-shadow:inset 0 0 0 3px var(--blue)}
+#curve button.b[aria-pressed=false]{background:#fff;color:var(--blue)}
 nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Fredoka,sans-serif}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -71,14 +76,14 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
 </div></header>
 
 <main class="band">
-<nav class="scroll" aria-label="Activities"><a href="#story">Story so far</a><a href="#background">A little history</a><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a><a href="#means">What it means for chaos</a></nav>
+<nav class="scroll" aria-label="Activities"><a href="#story">Story so far</a><a href="#background">A little history</a><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#patterns">Patterns</a><a href="#six">Rows of six</a><a href="#curve">Count against the curve</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a><a href="#means">What it means for chaos</a></nav>
 
 <section class="card story" id="story" style="margin-top:18px">
  <div class="tag">Start here</div>
  <h2>Story so far</h2>
  <p>Prime numbers are the numbers you can only lay out in one long line, like 2, 3, 5, 7 and 11. They seem to pop up at random, and for a very long time nobody could explain the pattern behind them.</p>
  <p>More than 150 years ago a mathematician called Bernhard Riemann made a famous guess. He found a machine of numbers whose secret helpers push the prime count up or down, and he guessed that every helper stands on one straight line. If he is right, the primes never stray far from a smooth path. People call this guess the Riemann Hypothesis, and nobody managed to prove it.</p>
- <p>This November a mathematician called Levent Alpöge said he had found a proof, working with an AI helper called Claude. The proof is so long that no person can read all of it, so he gave it to Lean, a computer teacher that checks every step. Lean found no missing dominoes. Mathematicians around the world now want to understand the proof in words people can follow, and that work has only just begun.</p>
+ <p>In November 2026 a mathematician called Levent Alpöge said he had found a proof, working with an AI helper called Claude. The proof is so long that no person can read all of it, so he gave it to Lean, a computer teacher that checks every step. Lean found no missing dominoes. Mathematicians around the world now want to understand the proof in words people can follow, and that work has only just begun.</p>
  <p>The games below let you try each idea yourself, one step at a time.</p>
 </section>
 
@@ -111,8 +116,41 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <p class="learn">What you just learned: primes get rarer as numbers grow, and the gaps between them jump about, so they look random. A fixed rule still decides every one. The big question for mathematicians is how far the real number of primes can stray from a smooth average.</p>
 </section>
 
-<section class="card" id="line">
+<section class="card story" id="patterns">
+ <div class="tag">Big question</div>
+ <h2>Is there a pattern in the primes?</h2>
+ <p>Yes, although nobody has found a simple rule that tells you the next prime. The patterns come in three sizes.</p>
+ <p><b>Small patterns you can see.</b> After 2, every prime is odd, because an even number can always be split into two equal rows. After 3 the pattern gets tighter: every prime sits one step away from a multiple of 6. For example, 5 and 7 sit either side of 6, 11 and 13 either side of 12, and 17 and 19 either side of 18. Write the numbers in rows of six and the primes fall into just two columns. Not every number in those columns is prime, though; 25 is 5 times 5.</p>
+ <p><b>A big pattern in how often primes appear.</b> Gauss looked at long tables of primes and guessed that they thin out at a steady, predictable rate. Hadamard and de la Vallée Poussin proved his guess in 1896, and it is now called the Prime Number Theorem. So the average pattern is known exactly.</p>
+ <p><b>A hidden pattern in the wobbles.</b> The real primes wobble around that average, arriving a little early here and a little late there. Riemann found that the wobbles are steered by his helper numbers. If all the helpers stand on one line, as he guessed, the wobbles stay as small and orderly as they possibly can. That is the hidden pattern, and it is what the Riemann Hypothesis says.</p>
+ <p>The next two games let you see the first two patterns, and the one after that shows the third as a picture.</p>
+</section>
+
+<section class="card" id="six">
  <div class="tag">Activity 3</div>
+ <h2>Rows of six</h2>
+ <p><b>Goal:</b> see the primes line up when you write the numbers in rows of six.</p>
+ <p>Here are the numbers from 1 to 96, six to a row. Press the button to colour the primes and watch where they land.</p>
+ <div class="row"><button class="b" id="sixGo">Colour the primes</button><button class="b alt" id="sixCols">Show the two columns</button><button class="b alt" id="sixReset">Start again</button></div>
+ <div class="six" id="sixGrid" aria-label="Numbers 1 to 96 in rows of six"></div>
+ <p class="say" id="sixSay"></p>
+ <p class="learn">What you just learned: apart from 2 and 3, every prime is one more or one less than a multiple of 6, so all of them fall in the same two columns. Those columns also hold numbers that are not prime, such as 25 and 35, so the pattern narrows the search without giving every prime away.</p>
+</section>
+
+<section class="card" id="curve">
+ <div class="tag">Activity 4</div>
+ <h2>Count against the curve</h2>
+ <p><b>Goal:</b> see the big pattern, and the wobbles around it.</p>
+ <p>The blue staircase steps up by one each time a prime appears. The red dashed line is Gauss's smooth guess for where the count should be. Pick how far to count.</p>
+ <div class="row"><button class="b" data-max="100">Up to 100</button><button class="b" data-max="1000">Up to 1,000</button><button class="b" data-max="10000">Up to 10,000</button></div>
+ <div class="fig" id="curveFig"><svg id="curveSvg" role="img" aria-label="Real count of primes as a staircase next to Gauss's smooth estimate"></svg></div>
+ <p class="say" id="curveSay"></p>
+ <p class="note">Real numbers, worked out by this page: the staircase counts actual primes, and the curve is Gauss's logarithmic integral estimate.</p>
+ <p class="learn">What you just learned: the staircase never strays far from the smooth curve, so the primes follow a steady average. The small gaps between the two lines are the wobbles, and Riemann's guess is about how big those wobbles can get.</p>
+</section>
+
+<section class="card" id="line">
+ <div class="tag">Activity 5</div>
  <h2>Riemann's line</h2>
  <p><b>Goal:</b> get a feel for what Riemann guessed, using a picture.</p>
  <p>Riemann's machine has secret helper numbers. Each helper nudges the prime count up or down. He guessed they all stand on one straight line. Press the button to push one helper off the line and watch the count wobble more.</p>
@@ -123,7 +161,7 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
 </section>
 
 <section class="card" id="proof">
- <div class="tag">Activity 4</div>
+ <div class="tag">Activity 6</div>
  <h2>Dominoes</h2>
  <p><b>Goal:</b> understand what a proof is, and what the computer checked.</p>
  <p>A proof works like a row of dominoes. Each step knocks over the next, so if the first falls, they all fall. A computer teacher called Lean checks that no domino is missing.</p>
@@ -134,7 +172,7 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
 </section>
 
 <section class="card" id="chaos">
- <div class="tag">Activity 5</div>
+ <div class="tag">Activity 7</div>
  <h2>Chaos</h2>
  <p><b>Goal:</b> see what scientists mean by chaos before reading what the proof means for it.</p>
  <p>Two marbles start almost in the same spot, only a hair apart. In a chaotic machine their paths soon look nothing alike. Scientists noticed that Riemann's helpers keep their distance the way energy levels do in chaotic systems.</p>
@@ -218,6 +256,32 @@ const drawChaos=()=>{const W=cs.clientWidth,H=cs.clientHeight,p=16;const n=Math.
 const ro2=new ResizeObserver(drawChaos);ro2.observe(cs);
 $('roll').onclick=()=>{clearInterval(tick);shown=0;tick=setInterval(()=>{shown++;drawChaos();if(shown>=40)clearInterval(tick)},70)};
 }
+</script>
+<script>
+(()=>{const q=id=>document.getElementById(id);
+const isP=n=>{if(n<2)return false;for(let d=2;d*d<=n;d++)if(n%d===0)return false;return true};
+/* rows of six */
+const g=q('sixGrid');const build6=()=>{g.innerHTML='';for(let n=1;n<=96;n++){const e=document.createElement('span');e.textContent=n;e.dataset.n=n;g.appendChild(e)}q('sixSay').textContent=''};build6();
+q('sixGo').onclick=()=>{[...g.children].forEach((e,i)=>{if(isP(+e.dataset.n))setTimeout(()=>e.classList.add('p'),i*25)});setTimeout(()=>{q('sixSay').textContent='Look down the columns. Apart from 2 and 3, every yellow number is in the first column or the fifth.'},96*25+200)};
+q('sixCols').onclick=()=>{[...g.children].forEach(e=>{const r=(+e.dataset.n)%6;if(r===1||r===5)e.classList.add('col')});q('sixSay').textContent='The blue columns hold the numbers just after and just before a multiple of 6. Every prime from 5 onwards lives here.'};
+q('sixReset').onclick=build6;
+/* count against the curve */
+const sv=q('curveSvg');let max=100;
+const Li=x=>{if(x<=2)return 0;const N=400,h=(x-2)/N;let s=1/Math.log(2)+1/Math.log(x);for(let i=1;i<N;i++){s+=(i%2?4:2)/Math.log(2+i*h)}return s*h/3};
+const pis=m=>{const c=new Uint8Array(m+1);const out=[];let k=0;for(let n=2;n<=m;n++){if(!c[n]){k++;for(let j=n*n;j<=m;j+=n)c[j]=1}out[n]=k}out[0]=0;out[1]=0;return out};
+const draw=()=>{const W=sv.clientWidth,H=sv.clientHeight,p=34;const pi=pis(max);const top=Math.max(pi[max],Li(max))*1.08;
+ const X=x=>p+(x/max)*(W-p-10),Y=y=>H-p-(y/top)*(H-p-10);
+ const step=Math.max(1,Math.floor(max/600));let st=`M${X(0)},${Y(0)}`;let prev=0;
+ for(let n=1;n<=max;n+=step){const v=pi[n];if(v!==prev){st+=`H${X(n).toFixed(1)}V${Y(v).toFixed(1)}`;prev=v}}st+=`H${X(max)}`;
+ let cv='';for(let i=0;i<=120;i++){const x=2+(max-2)*i/120;cv+=(i?'L':'M')+X(x).toFixed(1)+','+Y(Li(x)).toFixed(1)}
+ const ax=`<line x1="${p}" y1="${H-p}" x2="${W-10}" y2="${H-p}" stroke="var(--soft)"/><line x1="${p}" y1="10" x2="${p}" y2="${H-p}" stroke="var(--soft)"/>`+
+  `<text x="${W-10}" y="${H-10}" text-anchor="end" font-size="13" fill="var(--soft)">numbers up to ${max.toLocaleString('en-GB')}</text>`+
+  `<text x="${p+6}" y="22" font-size="13" fill="var(--soft)">how many primes so far</text>`;
+ sv.innerHTML=ax+`<path d="${cv}" fill="none" stroke="var(--red)" stroke-width="3" stroke-dasharray="7 6"/><path d="${st}" fill="none" stroke="var(--blue)" stroke-width="3"/>`;
+ q('curveSay').textContent=`Up to ${max.toLocaleString('en-GB')} there are ${pi[max].toLocaleString('en-GB')} primes. Gauss's curve says about ${Math.round(Li(max)).toLocaleString('en-GB')}.`};
+document.querySelectorAll('#curve button[data-max]').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.max==='100');b.onclick=()=>{max=+b.dataset.max;document.querySelectorAll('#curve button[data-max]').forEach(o=>o.setAttribute('aria-pressed',o===b));draw()}});
+new ResizeObserver(draw).observe(sv);
+})();
 </script>
 </body>
 </html>
