@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prime Numbers Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm, playful, clear; a lab for a child and a parent at a kitchen table
+   IDEA: a school maths workbook with counters, a hundred square and dominoes
+   PICTURE: the live hundred square sieve, large, at the top
+   COLOUR and TYPE: white paper, crayon red, blue and sunflower yellow; Fredoka titles, Nunito text
+   LAYOUT: one column of activity cards, each a page of the workbook */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#141821);--paper:light-dark(#f4f7ff,#1d2330);--ink:light-dark(#1b1f2a,#eef1f8);--soft:light-dark(#5a6275,#a9b1c4);--red:#e5383b;--blue:#2f6fde;--sun:#ffc533;--line:light-dark(#d9e0ef,#2e3647)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2{font-family:Fredoka,system-ui,sans-serif;line-height:1.05;text-wrap:balance;margin:0 0 10px}
+h1{font-size:clamp(34px,6vw,52px)}h2{font-size:clamp(24px,3.4vw,32px)}
+p{max-width:64ch;margin:0 0 12px}
+.band{padding:clamp(24px,4vw,56px) max(5vw,16px);max-width:1240px;margin:0 auto}
+.top{background:var(--blue);color:#fff;max-width:none}
+.top .in{max-width:1240px;margin:0 auto;display:grid;gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center}
+.top p{color:#eaf0ff}
+@media(max-width:800px){.top .in{grid-template-columns:minmax(0,1fr)}}
+.grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;background:#fff;padding:10px;border-radius:16px;box-shadow:0 10px 0 rgba(0,0,0,.18)}
+.cell{aspect-ratio:1;border:0;border-radius:8px;font:700 clamp(12px,2.2vw,18px) Fredoka,sans-serif;background:#eef3ff;color:#1b1f2a;cursor:pointer;transition:background .25s,transform .25s}
+.cell.out{background:#f1f1f1;color:#b9b9b9;text-decoration:line-through}
+.cell.prime{background:var(--sun)}
+.cell:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+button.b{min-height:44px;padding:0 18px;border-radius:22px;border:0;font:600 16px Fredoka,sans-serif;background:var(--sun);color:#1b1f2a;cursor:pointer}
+button.b.alt{background:#fff;color:var(--blue)}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.card .tag{font:600 15px Fredoka,sans-serif;color:var(--red);margin-bottom:4px}
+input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.dots{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px}
+.rect{display:grid;gap:5px;padding:10px;border-radius:12px;background:var(--bg);border:2px dashed var(--line)}
+.rect i{width:14px;height:14px;border-radius:50%;background:var(--red);display:block}
+.rect small{grid-column:1/-1;font:600 14px Fredoka,sans-serif;color:var(--soft)}
+.say{font:600 19px Fredoka,sans-serif;color:var(--blue);min-height:28px}
+.bars{display:grid;gap:8px;margin-top:8px}
+.bar{display:grid;grid-template-columns:6.5em minmax(0,1fr) 2em;gap:10px;align-items:center;font-size:15px}
+.bar span.f{height:22px;border-radius:11px;background:var(--blue);display:block}
+.bar b{text-align:right}
+.fig{position:relative;min-height:300px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.dom{display:flex;gap:10px;align-items:flex-end;height:110px;padding:10px 0;overflow-x:auto}
+.dom i{flex:none;width:22px;height:84px;border-radius:5px;background:var(--ink);transform-origin:bottom right;transition:transform .25s}
+.dom i.down{transform:rotate(62deg)}
+.note{font-size:14px;color:var(--soft)}
+nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Fredoka,sans-serif}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="band top"><div class="in">
+ <div>
+  <h1>Prime Numbers Lab</h1>
+  <p>Hands-on games for the maths behind the Riemann Hypothesis story. Made for a child of about six and a grown-up, side by side.</p>
+  <p>Start here with the prime hunt. Press 2, then 3, then 5, then 7. Each press crosses out the numbers you land on counting in that step. The yellow numbers left standing are the primes.</p>
+  <div class="row"><button class="b" id="auto">Do it for me</button><button class="b alt" id="reset">Start again</button></div>
+  <p class="say" id="sieveSay" style="color:#fff"></p>
+ </div>
+ <div class="grid" id="grid" aria-label="Hundred square"></div>
+</div></header>
+
+<main class="band">
+<nav class="scroll" aria-label="Activities"><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a></nav>
+
+<section class="card" id="rows" style="margin-top:18px">
+ <div class="tag">Activity 1</div>
+ <h2>Rows of buttons</h2>
+ <p>Pick a number of buttons. The lab tries every way to lay them out in equal rows. A prime number only makes one long line.</p>
+ <div class="row"><label for="n" style="align-self:center">How many buttons?</label><input type="number" id="n" min="2" max="36" value="12"><button class="b" id="go">Lay them out</button></div>
+ <p class="say" id="rowSay"></p>
+ <div class="dots" id="dots"></div>
+</section>
+
+<section class="card" id="gaps">
+ <div class="tag">Activity 2</div>
+ <h2>Gaps and counting</h2>
+ <p>The primes jump about, so they look random. A fixed rule decides every one. They also get rarer as the numbers grow. Here is how many primes live in each group of ten up to 100.</p>
+ <div class="bars" id="bars"></div>
+ <p class="say" id="gapSay"></p>
+</section>
+
+<section class="card" id="line">
+ <div class="tag">Activity 3</div>
+ <h2>Riemann's line</h2>
+ <p>Riemann's machine has secret helper numbers. Each helper nudges the prime count up or down. He guessed they all stand on one straight line. Press the button to push one helper off the line and watch the count wobble more.</p>
+ <div class="row"><button class="b" id="push">Push a helper off</button><button class="b alt" id="back">Put it back</button></div>
+ <div class="fig" id="lineFig"><svg id="lineSvg" role="img" aria-label="Helpers on a line and a wobbling count"></svg></div>
+ <p class="note">A picture to explain the idea, not real measurements.</p>
+</section>
+
+<section class="card" id="proof">
+ <div class="tag">Activity 4</div>
+ <h2>Dominoes</h2>
+ <p>A proof works like a row of dominoes. Each step knocks over the next, so if the first falls, they all fall. A computer teacher called Lean checks that no domino is missing.</p>
+ <div class="row"><button class="b" id="tip">Push the first one</button><button class="b alt" id="gap">Take one away</button><button class="b alt" id="stand">Stand them up</button></div>
+ <div class="dom" id="dom"></div>
+ <p class="say" id="domSay"></p>
+</section>
+
+<section class="card" id="chaos">
+ <div class="tag">Activity 5</div>
+ <h2>Chaos</h2>
+ <p>Two marbles start almost in the same spot, only a hair apart. In a chaotic machine their paths soon look nothing alike. Scientists noticed that Riemann's helpers keep their distance the way energy levels do in chaotic systems.</p>
+ <div class="row"><button class="b" id="roll">Roll the marbles</button></div>
+ <div class="fig" id="chaosFig"><svg id="chaosSvg" role="img" aria-label="Two paths that start close and spread apart"></svg></div>
+ <p class="note">The paths come from a simple chaotic rule, drawn as an illustration.</p>
+</section>
+<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim.</p>
+</main>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const isPrime=n=>{if(n<2)return false;for(let d=2;d*d<=n;d++)if(n%d===0)return false;return true};
+
+/* sieve */
+const grid=$('grid');const crossed=new Set();
+grid.innerHTML=Array.from({length:100},(_,i)=>`<button class="cell" data-n="${i+1}">${i+1}</button>`).join('');
+const paint=()=>{for(const c of grid.children){const n=+c.dataset.n;c.classList.toggle('out',crossed.has(n)||n===1);c.classList.toggle('prime',[2,3,5,7].every(p=>done.has(p))&&!crossed.has(n)&&n>1)}};
+const done=new Set();
+const sieve=p=>{for(let m=p*2;m<=100;m+=p)crossed.add(m);done.add(p);paint();
+ $('sieveSay').textContent=done.size===4?'All done. 25 primes are left standing below 100.':`Counted in ${p}s. Now press the next one: 2, 3, 5 or 7.`};
+grid.addEventListener('click',e=>{const c=e.target.closest('.cell');if(!c)return;const n=+c.dataset.n;
+ if([2,3,5,7].includes(n))sieve(n);else $('sieveSay').textContent=isPrime(n)?`${n} is prime: it only makes one line.`:n===1?'1 is not counted as prime.':`${n} is not prime.`});
+$('auto').onclick=()=>{[2,3,5,7].forEach((p,i)=>setTimeout(()=>sieve(p),i*500))};
+$('reset').onclick=()=>{crossed.clear();done.clear();paint();$('sieveSay').textContent=''};
+paint();
+
+/* rows */
+const lay=()=>{let n=Math.max(2,Math.min(36,Math.round(+$('n').value||2)));$('n').value=n;
+ const ways=[];for(let r=1;r<=n;r++)if(n%r===0)ways.push([r,n/r]);
+ $('dots').innerHTML=ways.map(([r,c])=>`<div class="rect" style="grid-template-columns:repeat(${c},14px)">${'<i></i>'.repeat(n)}<small>${r} row${r>1?'s':''} of ${c}</small></div>`).join('');
+ $('rowSay').textContent=ways.length===2?`${n} only makes one long line. It is prime!`:`${n} can make equal rows, so it is not prime.`};
+$('go').onclick=lay;lay();
+
+/* bars and gaps */
+const groups=Array.from({length:10},(_,g)=>{const a=g*10+1,b=g*10+10;let k=0;for(let n=a;n<=b;n++)if(isPrime(n))k++;return{a,b,k}});
+$('bars').innerHTML=groups.map(g=>`<div class="bar"><span>${g.a} to ${g.b}</span><span class="f" style="width:${g.k/4*100}%"></span><b>${g.k}</b></div>`).join('');
+const pr=[];for(let n=2;n<=100;n++)if(isPrime(n))pr.push(n);
+$('gapSay').textContent='Gaps between the primes: '+pr.slice(1).map((p,i)=>p-pr[i]).join(', ');
+
+/* Riemann line */
+let off=false;const ls=$('lineSvg');
+const drawLine=()=>{const W=ls.clientWidth,H=ls.clientHeight,x0=Math.min(120,W*.22);
+ const ys=Array.from({length:9},(_,i)=>24+i*(H-48)/8);
+ let s=`<line x1="${x0}" y1="12" x2="${x0}" y2="${H-12}" stroke="var(--blue)" stroke-width="4" stroke-linecap="round"/>`;
+ s+=ys.map((y,i)=>{const x=off&&i===4?x0+Math.min(60,W*.08):x0;return `<circle cx="${x}" cy="${y}" r="9" fill="${off&&i===4?'var(--red)':'var(--sun)'}" stroke="var(--ink)" stroke-width="2"/>`}).join('');
+ const gx=x0+70,gw=W-gx-16,mid=H/2,amp=off?H*.32:H*.07;let d='';
+ for(let k=0;k<=120;k++){const t=k/120,y=mid+amp*Math.sin(t*14)*Math.cos(t*5)*(off?1+t:1);d+=(k?'L':'M')+(gx+t*gw).toFixed(1)+' '+y.toFixed(1)}
+ s+=`<line x1="${gx}" y1="${mid}" x2="${gx+gw}" y2="${mid}" stroke="var(--soft)" stroke-dasharray="6 6"/>`;
+ s+=`<path d="${d}" fill="none" stroke="var(--red)" stroke-width="3"/>`;
+ if(W>420)s+=`<text x="${gx}" y="18" fill="var(--soft)" font-size="14" font-family="Nunito">Prime count minus the smooth guess</text>`;
+ ls.innerHTML=s};
+const ro1=new ResizeObserver(drawLine);ro1.observe(ls);
+$('push').onclick=()=>{off=true;drawLine()};$('back').onclick=()=>{off=false;drawLine()};
+
+/* dominoes */
+const N=12;let missing=-1;const dom=$('dom');
+const build=()=>{dom.innerHTML=Array.from({length:N},(_,i)=>`<i style="visibility:${i===missing?'hidden':'visible'}"></i>`).join('');$('domSay').textContent=''};
+$('tip').onclick=()=>{const ds=[...dom.children];let stop=missing>=0?missing:N;
+ ds.forEach((d,i)=>{if(i<stop)setTimeout(()=>d.classList.add('down'),i*160)});
+ setTimeout(()=>{$('domSay').textContent=missing>=0?'A domino is missing, so the rest stay standing. The proof has a gap.':'Every domino fell. The proof is complete.'},stop*160+200)};
+$('gap').onclick=()=>{missing=5;build()};$('stand').onclick=()=>{missing=-1;build()};build();
+
+/* chaos */
+const cs=$('chaosSvg');let shown=0,tick=null;
+const path=x=>{const a=[x];for(let i=0;i<40;i++){x=3.9*x*(1-x);a.push(x)}return a};
+const A=path(.5),B=path(.5005);
+const drawChaos=()=>{const W=cs.clientWidth,H=cs.clientHeight,p=16;const n=Math.max(1,shown);
+ const pts=arr=>arr.slice(0,n+1).map((v,i)=>`${(p+i/40*(W-2*p)).toFixed(1)},${(H-p-v*(H-2*p)).toFixed(1)}`).join(' ');
+ cs.innerHTML=`<polyline points="${pts(A)}" fill="none" stroke="var(--blue)" stroke-width="3"/><polyline points="${pts(B)}" fill="none" stroke="var(--red)" stroke-width="3" stroke-dasharray="2 0"/>`};
+const ro2=new ResizeObserver(drawChaos);ro2.observe(cs);
+$('roll').onclick=()=>{clearInterval(tick);shown=0;tick=setInterval(()=>{shown++;drawChaos();if(shown>=40)clearInterval(tick)},70)};
+}
+</script>
+</body>
+</html>
