@@ -57,6 +57,8 @@ input[type=number]{font:600 18px Fredoka,sans-serif;width:110px;min-height:44px;
 .six span.p{background:var(--sun);color:#1b1f2a;border-color:var(--sun)}
 .six span.col{box-shadow:inset 0 0 0 3px var(--blue)}
 #curve button.b[aria-pressed=false]{background:#fff;color:var(--blue)}
+.tbl{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:16px}.tbl th,.tbl td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}.tbl th{font:600 15px Fredoka,sans-serif;color:var(--blue)}
+@media(max-width:640px){.tbl{font-size:14px}.tbl th,.tbl td{padding:6px}}
 nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a{flex:none;color:var(--blue);font:600 15px Fredoka,sans-serif}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -76,7 +78,7 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
 </div></header>
 
 <main class="band">
-<nav class="scroll" aria-label="Activities"><a href="#story">Story so far</a><a href="#background">A little history</a><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#patterns">Patterns</a><a href="#six">Rows of six</a><a href="#curve">Count against the curve</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a><a href="#means">What it means for chaos</a></nav>
+<nav class="scroll" aria-label="Activities"><a href="#story">Story so far</a><a href="#background">A little history</a><a href="#rows">Rows of buttons</a><a href="#gaps">Gaps and counting</a><a href="#patterns">Patterns</a><a href="#six">Rows of six</a><a href="#curve">Count against the curve</a><a href="#scale">Pattern in the scale</a><a href="#who">Who discovered what</a><a href="#riddle">Why it stayed a riddle</a><a href="#line">Riemann's line</a><a href="#proof">Dominoes</a><a href="#chaos">Chaos</a><a href="#means">What it means for chaos</a></nav>
 
 <section class="card story" id="story" style="margin-top:18px">
  <div class="tag">Start here</div>
@@ -149,6 +151,39 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <p class="learn">What you just learned: the staircase never strays far from the smooth curve, so the primes follow a steady average. The small gaps between the two lines are the wobbles, and Riemann's guess is about how big those wobbles can get.</p>
 </section>
 
+<section class="card story" id="scale">
+ <div class="tag">Pattern in the scale</div>
+ <h2>Each time the numbers grow ten times, the gaps grow by the same step</h2>
+ <p>Single gaps between primes jump about, but their average follows a steady rule. Around any number, the average distance to the next prime is close to that number's natural logarithm, a quantity that grows by the same amount, about 2.3, every time the number gets ten times bigger.</p>
+ <table class="tbl"><thead><tr><th>Numbers around</th><th>Average gap between primes</th></tr></thead><tbody>
+ <tr><td>1,000</td><td>about 6.5</td></tr><tr><td>10,000</td><td>about 9.2</td></tr><tr><td>100,000</td><td>about 11.5</td></tr><tr><td>1 million</td><td>about 13.9</td></tr><tr><td>10 million</td><td>about 16.2</td></tr><tr><td>100 million</td><td>about 18.4</td></tr></tbody></table>
+ <p class="note">Worked out for this page by listing every prime up to just over 100 million and averaging the gaps around each size of number.</p>
+ <p class="learn">What you just learned: the primes thin out at a steady rate across every scale. This rule is more than two hundred years old; the next box shows who found it.</p>
+</section>
+
+<section class="card story" id="who">
+ <div class="tag">Who discovered what</div>
+ <h2>From a pattern in tables to a machine-checked proof</h2>
+ <table class="tbl"><thead><tr><th>Who</th><th>When</th><th>What they found</th><th>Where it was published</th></tr></thead><tbody>
+ <tr><td>Adrien-Marie Legendre</td><td>1798</td><td>First published guess for how many primes lie below any number, worked out from printed tables of primes</td><td>His book <i>Essai sur la théorie des nombres</i>, Paris; refined in the second edition</td></tr>
+ <tr><td>Carl Friedrich Gauss</td><td>began as a teenager in the early 1790s</td><td>Found the same pattern from his own prime tables and the rule that a number near n is prime with a chance of about 1 in log n</td><td>Kept private until a letter to the astronomer Johann Encke on Christmas Eve 1849, printed in his collected works in 1863</td></tr>
+ <tr><td>Bernhard Riemann</td><td>1859</td><td>Linked the count of primes to the zeros of the zeta function, his "helpers", and guessed that every zero lies on one line</td><td>"On the Number of Primes Less Than a Given Quantity", monthly reports of the Berlin Academy of Sciences, his only paper on number theory</td></tr>
+ <tr><td>Jacques Hadamard and Charles de la Vallée Poussin</td><td>1896</td><td>Proved, separately and using Riemann's ideas, that the pattern in the scale is true; it is now called the Prime Number Theorem</td><td>Hadamard in the <i>Bulletin de la Société Mathématique de France</i>; de la Vallée Poussin in the <i>Annales de la Société Scientifique de Bruxelles</i></td></tr>
+ <tr><td>Levent Alpöge, working with Claude</td><td>November 2026</td><td>Claims a proof of Riemann's guess, checked line by line by the Lean proof software</td><td>Released as Lean code with an announcement note; no human-readable paper or peer review yet</td></tr>
+ </tbody></table>
+ <p class="learn">What you just learned: the pattern in the scale was spotted in the 1790s and proved in 1896. Riemann's guess asks a sharper question, and that question is what the 2026 claim is about.</p>
+</section>
+
+<section class="card story" id="riddle">
+ <div class="tag">Why it stayed a riddle</div>
+ <h2>Knowing the average is easier than knowing the worst wobble</h2>
+ <p>The 1896 theorem tells you the average: how many primes to expect below a number. It says little about how far the real count can stray from that average. Riemann's guess is about exactly this: if every zero lies on his line, the real count never strays further than it must, and the wobbles around the curve stay as small as they can be.</p>
+ <p>The difficulty is that there are infinitely many zeros. Computers have checked billions of them one by one and found every one on the line, but no list of checks reaches all of them. Mathematicians therefore tried to prove that at least a share of the zeros sits on the line. Earlier in 2026 an unreleased version of Claude raised that proven share to more than two in three, according to Anthropic, and the company said this did not settle the hypothesis.</p>
+ <p>Alpöge's claimed proof covers every zero. In his announcement note he describes an argument descended from a technique used over function fields and built from chained transformations between automorphic forms. A written version produced by machine runs past a quarter of a million pages; he called it unreadable and released the Lean code instead. A verification report by MIT mathematician Andrew Sutherland found that the checked result covers the classical hypothesis and a generalised form for one family of functions, Dirichlet L-functions.</p>
+ <p>Mathematicians now want a version that people can read and understand. The Clay Mathematics Institute, which offers a prize for the problem, requires publication followed by two years of scrutiny, so the riddle is closed for the computer and still open for human understanding.</p>
+ <p class="learn">What you just learned: Riemann's guess stayed open for more than 160 years because it is a claim about infinitely many zeros, and no amount of checking examples can prove it. Only a proof that covers every case can, and that is what Lean checked in November 2026.</p>
+</section>
+
 <section class="card" id="line">
  <div class="tag">Activity 5</div>
  <h2>Riemann's line</h2>
@@ -189,7 +224,7 @@ nav.scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}nav.scroll a
  <p>The proof does not find the hidden machine. Alpöge's argument uses tools from pure mathematics with no physics machine inside it, so the link between primes and chaos is still a puzzle waiting for an explanation.</p>
  <p>The primes still teach a lesson. They look random from the outside, yet every single one is fixed by a rule, so what looked like chaos was an intricate order we had not yet learned to see.</p>
 </section>
-<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim. History sources: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Prime_numbers/">MacTutor, University of St Andrews, "Prime numbers"</a>; <a href="https://arxiv.org/abs/1810.05244">Moree, Petrykiewicz and Sedunova, "A computational history of prime numbers and Riemann zeros"</a>.</p>
+<p class="note">Companion to the Content Wire primer on the maths behind the Riemann proof claim. History sources: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Prime_numbers/">MacTutor, University of St Andrews, "Prime numbers"</a>; <a href="https://arxiv.org/abs/1810.05244">Moree, Petrykiewicz and Sedunova, "A computational history of prime numbers and Riemann zeros"</a>; <a href="https://jontalle.web.engr.illinois.edu/uploads/298.15/GoldsteinHistPrimeNumThm.73.pdf">Goldstein, "A history of the prime number theorem"</a>; <a href="https://t5k.org/howmany.html">The Prime Pages, "How many primes are there?"</a>; <a href="https://arxiv.org/abs/0803.0420">reference list in arXiv:0803.0420</a> for the 1798, 1863 and 1896 publications; <a href="https://pub.math.leidenuniv.nl/~evertsejh/ant16-1.pdf">Leiden University lecture notes</a> for Riemann's 1859 paper. On the 2026 claim: <a href="https://alpo.ge/remark.pdf">Alpöge's announcement note</a>; <a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean and Mathlib communities' joint statement</a>; <a href="https://math.mit.edu/~drew/grh/">Sutherland's verification report</a>; <a href="https://www.anthropic.com/research/riemann-zeta">Anthropic's research post on the zeta zeros</a>.</p>
 </main>
 
 <script>
